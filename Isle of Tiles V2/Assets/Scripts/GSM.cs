@@ -9,8 +9,18 @@ public class GSM : MonoBehaviour {
     public int chips1;
     public GameObject tilePrefab;
 
+
+    public int yellowCount;
+    public int blueCount;
+    public int greenCount;
+    public int redCount;
+
     void Awake() {
         God.GSM = this;
+        yellowCount = (gridLength * gridHeight) / 4;
+        blueCount = (gridLength * gridHeight) / 4;
+        greenCount = (gridLength * gridHeight) / 4;
+        redCount = (gridLength * gridHeight) / 4;
     }
 
 
