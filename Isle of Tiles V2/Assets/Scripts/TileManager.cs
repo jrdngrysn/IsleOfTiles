@@ -5,24 +5,31 @@ using UnityEngine;
 public class TileManager : MonoBehaviour {
     //public List<int> Tiles;
     public Queue<Tile> tilesTemp = new Queue<Tile>();
-    public Tile[,] tiles = new Tile[2, 2];
-    public GameObject[,] tilesPrefab = new GameObject[2, 2];
+    public Tile[,] tiles = new Tile[God.DIMENSIONS.x, God.DIMENSIONS.y];
+    public GameObject[,] tilesPrefab = new GameObject[God.DIMENSIONS.x, God.DIMENSIONS.y];
 
     // Start is called before the first frame update
     void Start() {
-        tilesTemp.Enqueue(new Tile(0, 0, 0, false));
-        tilesTemp.Enqueue(new Tile(0, 1, 1, false));
-        tilesTemp.Enqueue(new Tile(1, 0, 2, false));
-        tilesTemp.Enqueue(new Tile(1, 1, 3, false));
+        tilesTemp = God.GSM.GetPresetTiles();
 
-        for (int x = 0; x < 2; x++)
+        //tilesTemp.Enqueue(new Tile(0, 0, 0, false));
+        //tilesTemp.Enqueue(new Tile(0, 1, 1, false));
+        //tilesTemp.Enqueue(new Tile(1, 0, 2, false));
+        //tilesTemp.Enqueue(new Tile(1, 1, 3, false));
+
+        GameObject GridHolder = new GameObject();
+        GridHolder.name = "Grid";
+        GridHolder.transform.localPosition = new Vector3(-2f, -2.5f, 0f);
+
+        for (int x = 0; x < God.DIMENSIONS.x; x++)
         {
-            for (int y = 0; y < 2; y++)
+            for (int y = 0; y < God.DIMENSIONS.y; y++)
             {
                 Tile tempTile = tilesTemp.Dequeue();
                 tiles[x, y] = tempTile;
                 GameObject newSprite = Instantiate(God.GSM.tilePrefab);
                 tilesPrefab[x, y] = newSprite;
+                tilesPrefab[x, y].transform.parent = GridHolder.transform;
                 newSprite.name = ("Tile: " + x + "-" + y);
                 newSprite.transform.localPosition = new Vector3(x, y, 0);
 
@@ -58,9 +65,9 @@ public class TileManager : MonoBehaviour {
         //while (green == yellow || green == red || green == blue)
         //green = Random.Range(0, 3);
 
-        for (int x = 0; x < 2; x++)
+        for (int x = 0; x < God.DIMENSIONS.x; x++)
         {
-            for (int y = 0; y < 2; y++)
+            for (int y = 0; y < God.DIMENSIONS.y; y++)
             {
 
 
@@ -99,18 +106,18 @@ public class TileManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow) && God.GSM.player1.x < 1)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && God.GSM.player1.x < (God.DIMENSIONS.x - 1))
             God.GSM.player1.x++;
         else if (Input.GetKeyDown(KeyCode.LeftArrow) && God.GSM.player1.x > 0)
             God.GSM.player1.x--;
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && God.GSM.player1.y < 1)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && God.GSM.player1.y < (God.DIMENSIONS.y - 1))
             God.GSM.player1.y++;
         else if (Input.GetKeyDown(KeyCode.DownArrow) && God.GSM.player1.y > 0)
             God.GSM.player1.y--;
 
-        for (int x = 0; x < 2; x++) 
+        for (int x = 0; x < God.DIMENSIONS.x; x++) 
         {
-            for (int y = 0; y < 2; y++)
+            for (int y = 0; y < God.DIMENSIONS.y; y++)
             {
                 if(x == God.GSM.player1.x && y == God.GSM.player1.y)
                 {
