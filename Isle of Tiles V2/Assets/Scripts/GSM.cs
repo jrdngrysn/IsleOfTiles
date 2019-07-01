@@ -9,6 +9,10 @@ public class GSM : MonoBehaviour {
     public int chips1;
     public GameObject tilePrefab;
 
+    public int blue = 0;
+    public int yellow = 1;
+    public int green = 2;
+    public int red = 3;
 
     public int yellowCount;
     public int blueCount;
@@ -21,6 +25,34 @@ public class GSM : MonoBehaviour {
         blueCount = (gridLength * gridHeight) / 4;
         greenCount = (gridLength * gridHeight) / 4;
         redCount = (gridLength * gridHeight) / 4;
+    }
+
+    public Stack<Tile> ShuffleStack(Stack<Tile> T)
+    {
+        List<Tile> t = new List<Tile>();
+        t.AddRange(T);
+        T.Clear();
+        while (t.Count > 0)
+        {
+            Tile c = t[Random.Range(0, t.Count)];
+            t.Remove(c);
+            T.Push(c);
+        }
+        return T;
+    }
+
+    public Stack<int> ShuffleStackInt(Stack<int> T)
+    {
+        List<int> t = new List<int>();
+        t.AddRange(T);
+        T.Clear();
+        while (t.Count > 0)
+        {
+            int c = t[Random.Range(0, t.Count)];
+            t.Remove(c);
+            T.Push(c);
+        }
+        return T;
     }
 
 

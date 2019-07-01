@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class TileGenerator : MonoBehaviour {
     public Tile[,] tiles = new Tile[8, 8];
+    public Stack<Tile> tilesStack = new Stack<Tile>();
     public GameObject[,] sprites = new GameObject[8, 8];
     Tile currentTile;
 
     // Start is called before the first frame update
     void Start() {
-        createBlankGrid();
-        generateColors();
+        createBlankTiles();
+        God.GSM.ShuffleStack(tilesStack);
+        //generateColors();
         //displayColors();
         Debug.Log("HAHA");
 
@@ -23,13 +25,14 @@ public class TileGenerator : MonoBehaviour {
     }
     
 
-    void createBlankGrid()
+    void createBlankTiles()
     {
         for (int x = 0; x < God.GSM.gridLength; x++)
         {
             for (int y = 0; y < God.GSM.gridHeight; y++)
             {
-                tiles[x, y] = new Tile(x, y, -1, false);
+                //tiles[x, y] = new Tile(x, y, -1, false);
+                tilesStack.Push(new Tile(x, y, -1, false));
                 GameObject newSprite = Instantiate(God.GSM.tilePrefab);
                 sprites[x, y] = newSprite;
                 newSprite.name = ("Tile: " + x + "-" + y);
@@ -40,31 +43,77 @@ public class TileGenerator : MonoBehaviour {
 
     void generateColors()
     {
-        for (int i = 0; i < (God.GSM.gridHeight * God.GSM.gridLength); i++)
+        List<Tile> chosenTiles = new List<Tile>();
+        for (int i = 0; i < tilesStack.Count; i++)
         {
-            bool tileDuplication = true;
-            bool sameColor = true;
-            while (tileDuplication)
+            Tile tempTile = tilesStack.Pop();
+            for (int j = 0; j < chosenTiles.Count; j++)
             {
-                currentTile = tiles[Random.Range(0, 8), Random.Range(0, 8)];
-                if (currentTile.color == -1)
+                if (tempTile.color == chosenTiles[j].color)
                 {
-                    tileDuplication = false;
-                }
-            }
-            while (sameColor)
-            {
-                currentTile.color = Random.Range(0, 4);
-                if ((currentTile.x == 0 || currentTile.color != tiles[currentTile.x - 1, currentTile.y].color) &&
-                (currentTile.x == 7 || currentTile.color != tiles[currentTile.x + 1, currentTile.y].color) &&
-                (currentTile.y == 0 || currentTile.color != tiles[currentTile.x, currentTile.y - 1].color) &&
-                (currentTile.y == 7 || currentTile.color != tiles[currentTile.x, currentTile.y + 1].color))
-                {
-                    sameColor = false;
+                    if ((tempTile.x == (chosenTiles[j].x - 1) || tempTile.x == (chosenTiles[j].x + 1))
+                    && tempTile.y == chosenTiles[j].y)
+                    {
+                        tilesStack.Push(tempTile);
+                        break;
+                    }
+                    else if ((tempTile.y == (chosenTiles[j].y - 1) || tempTile.y == (chosenTiles[j].y + 1))
+                    && tempTile.x == chosenTiles[j].x)
+                    {
+                        break;
+                    }
                 }
             }
         }
     }
+
+
+
+
+
+    //void generateColors()
+    //{
+
+
+
+
+    //    for (int i = 0; i < God.GSM.blueCount; i++)
+    //    {
+    //        Tile randomTile = tilesQueue.
+    //    }
+
+
+    //    for (int i = 0; i < tilesQueue.Count; i++)
+    //    {
+
+
+
+
+
+
+    //        bool tileDuplication = true;
+    //        bool sameColor = true;
+    //        while (tileDuplication)
+    //        {
+    //            currentTile = tiles[Random.Range(0, 8), Random.Range(0, 8)];
+    //            if (currentTile.color == -1)
+    //            {
+    //                tileDuplication = false;
+    //            }
+    //        }
+    //        while (sameColor)
+    //        {
+    //            currentTile.color = Random.Range(0, 4);
+    //            if ((currentTile.x == 0 || currentTile.color != tiles[currentTile.x - 1, currentTile.y].color) &&
+    //            (currentTile.x == 7 || currentTile.color != tiles[currentTile.x + 1, currentTile.y].color) &&
+    //            (currentTile.y == 0 || currentTile.color != tiles[currentTile.x, currentTile.y - 1].color) &&
+    //            (currentTile.y == 7 || currentTile.color != tiles[currentTile.x, currentTile.y + 1].color))
+    //            {
+    //                sameColor = false;
+    //            }
+    //        }
+    //    }
+    //}
 
     void displayColors()
     {
