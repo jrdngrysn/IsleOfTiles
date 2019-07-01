@@ -115,17 +115,27 @@ public class TileManager : MonoBehaviour {
                 if(x == God.GSM.player1.x && y == God.GSM.player1.y)
                 {
                     tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.black;
+                    if (tiles[x, y].color == God.GSM.blue)
+                        tiles[x, y].isFlipped = true;
                 }
                 else
                 {
-                    if (tiles[x, y].color == God.GSM.blue)
+                    if (tiles[x, y].color == God.GSM.blue && !tiles[x, y].isFlipped)
                         tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.blue;
-                    else if (tiles[x, y].color == God.GSM.red)
+                    else if (tiles[x, y].color == God.GSM.red && !tiles[x, y].isFlipped)
                         tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.red;
-                    else if (tiles[x, y].color == God.GSM.yellow)
+                    else if (tiles[x, y].color == God.GSM.yellow && !tiles[x, y].isFlipped)
                         tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.yellow;
-                    else if (tiles[x, y].color == God.GSM.green)
+                    else if (tiles[x, y].color == God.GSM.green && !tiles[x, y].isFlipped)
                         tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.green;
+                    else if (tiles[x, y].color == God.GSM.blue && tiles[x, y].isFlipped)
+                        tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    else if (tiles[x, y].color == God.GSM.red && tiles[x, y].isFlipped)
+                        tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.magenta;
+                    else if (tiles[x, y].color == God.GSM.yellow && tiles[x, y].isFlipped)
+                        tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.gray;
+                    else if (tiles[x, y].color == God.GSM.green && tiles[x, y].isFlipped)
+                        tilesPrefab[x, y].GetComponent<SpriteRenderer>().color = Color.white;
                 }
 
             }
